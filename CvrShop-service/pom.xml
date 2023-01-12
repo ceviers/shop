@@ -21,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>com.cevier</groupId>
-            <artifactId>shop-mapper</artifactId>
+            <artifactId>CvrShop-mapper</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
