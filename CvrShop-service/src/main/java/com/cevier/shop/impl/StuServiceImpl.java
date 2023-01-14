@@ -1,7 +1,7 @@
 package com.cevier.shop.impl;
 
 import com.cevier.shop.StuService;
-import com.cevier.shop.mapper.StuMapper;
+import com.cevier.shop.manager.StuManager;
 import com.cevier.shop.pojo.Stu;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 public class StuServiceImpl implements StuService {
 
     @Resource
-    private StuMapper stuMapper;
+    private StuManager stuManager;
 
     @Override
     public Stu getStuInfo(int id) {
-        return stuMapper.selectById(id);
+        return stuManager.getById(id);
     }
 
     @Override

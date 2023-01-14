@@ -6,4 +6,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="age" jdbcType="INTEGER" property="age" />
   </resultMap>
+  <select id="queryStuById" resultType="com.cevier.shop.pojo.Stu">
+    SELECT * FROM stu WHERE id = '#{id}'
+  </select>
 </mapper>
