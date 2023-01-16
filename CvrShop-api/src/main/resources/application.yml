@@ -23,7 +23,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 server:
-  port: 8080
+  port: 8088
   tomcat:
     uri-encoding: UTF-8
   max-http-request-header-size: 80KB

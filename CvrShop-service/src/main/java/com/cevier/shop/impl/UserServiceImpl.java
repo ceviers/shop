@@ -5,10 +5,13 @@ import com.cevier.shop.enums.GenderEnum;
 import com.cevier.shop.manager.UserManager;
 import com.cevier.shop.pojo.Users;
 import com.cevier.shop.pojo.bo.passport.UserBO;
+import com.cevier.shop.pojo.bo.passport.UserLoginBO;
+import com.cevier.shop.pojo.vo.UserVO;
 import com.cevier.shop.utils.DateUtil;
 import com.cevier.shop.utils.MD5Utils;
 import jakarta.annotation.Resource;
 import org.n3r.idworker.Sid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Users creatUser(UserBO userBO) {
+    public UserVO creatUser(UserBO userBO) {
         Users user = new Users();
 
         user.setUsername(userBO.getUsername());
@@ -59,8 +62,19 @@ public class UserServiceImpl implements UserService {
 
         userManager.saveUser(user);
 
-        return user;
+        UserVO vo = new UserVO();
+        BeanUtils.copyProperties(user, vo);
+        return vo;
     }
 
 
+    @Override
+    public UserVO checkLogin(UserLoginBO userloginBO) {
+        try {
+            userloginBO.setPassword(MD5Utils.getMD5Str(userloginBO.getPassword()));
+        } catch (Exception e) {
+            return null;
+        }
+        return userManager.checkIfUserNameAndPasswordMatched(userloginBO);
+    }
 }
