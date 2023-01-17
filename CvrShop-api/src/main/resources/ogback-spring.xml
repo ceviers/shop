@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns="http://ch.qos.logback/xml/ns/logback"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback
+                https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd" debug="true">
+
+    <!-- 日志追加器，class属性指定输出方法 -->
+    <!-- 控制台输出 -->
+    <appender name="ConsoleOut" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- 日志输出模板 -->
+            <!--
+            %date{pattern, timezone}: 时间
+            %msg: 日志内容
+            %logger{}: 记录器名称, {}名称简化方式, 可以不加
+            %class{}: 日志调用者类名
+            %line: 日志输出代码的行号
+            %level: 日志级别
+            %thread: 日志的线程
+            %n: 换行
+            %50line: 格式修饰符，限制line长度为50，不足时line前面用空格占位；%-50line，长度不足时line后面用空格占位
+            -->
+            <pattern>%date %logger{0} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 文件输出 -->
+    <appender name="FileOut" class="ch.qos.logback.core.FileAppender">
+        <encoder>
+            <pattern>%date %msg %n</pattern>
+        </encoder>
+        <!-- 日志文件名 -->
+        <file>logs/shop.log</file>
+        <!-- 是否追加 -->
+        <append>true</append>
+    </appender>
+
+    <!-- 可以根据时间生成新的日志文件 -->
+    <appender name="RollingFileOut-ByTime" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%date %msg %n</pattern>
+        </encoder>
+        <file>logs/rolling-test.log</file>
+        <!-- 生成新日志文件的策略 -->
+        <!-- 按时间 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 达到设定条件时，程序将上面设置的文件名rolling-test.log修改为HH-mm-ss.log放到log/yyy/MM/dd目录下进行归档 -->
+            <!-- 每秒生成一个日志文件 -->
+            <fileNamePattern>log/%d{yyyy/MM/dd/HH-mm-ss}.log</fileNamePattern>
+            <!-- 设置最大归档文件数量，超过后将旧的文件删除 -->
+            <maxHistory>3</maxHistory>
+            <!-- 设置所有日志文件总大小，超过后删除旧文件 -->
+            <totalSizeCap>100MB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 可以根据时间、文件大小生成新的日志文件 -->
+    <appender name="RollingFileOut-ByTimeAndSize" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%date %msg %n</pattern>
+        </encoder>
+        <file>logs/rolling/test.log</file>
+        <!-- 生成新日志文件的策略 -->
+        <!-- 按时间 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 达到设定条件时，程序将上面设置的文件名rolling/test.log修改为HH-mm-ss.log放到logs/yyy/MM/dd目录下进行归档 -->
+            <!-- 每秒生成一个日志文件 -->
+            <fileNamePattern>logs/%d{yyyy/MM/dd/HH-mm-ss}-%i.log</fileNamePattern>
+            <!-- 设置最大归档文件数量，超过后将旧的文件删除 -->
+            <!-- 这里设置的是时间{yyyy/MM/dd/HH-mm-ss}的最大文件数量，不是%i的最大文件数量，这里的设置只保留最近三秒的文件 -->
+            <maxHistory>3</maxHistory>
+            <!-- 设置所有日志文件总大小，超过后删除旧文件 -->
+            <totalSizeCap>100MB</totalSizeCap>
+            <!-- 每个日志文件大小 -->
+            <maxFileSize>1KB</maxFileSize>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 自己创建的记录器继承于父记录器（这里是ROOT记录器） -->
+    <!-- 创建记录器: CvrLogger。 -->
+    <logger name="CvrLogger" level="INFO">
+        <!-- 可以引用多个日志追加器 -->
+        <appender-ref ref="ConsoleOut"/>
+        <appender-ref ref="FileOut"/>
+        <appender-ref ref="RollingFileOut-ByTimeAndSize"/>
+    </logger>
+
+    <!-- 记录器级别: TRACE < DEBUG < INFO <WARN < ERROR -->
+
+    <!-- 根记录器 -->
+    <root level="INFO">
+        <appender-ref ref="ConsoleOut"/>
+        <appender-ref ref="FileOut"/>
+        <appender-ref ref="RollingFileOut-ByTimeAndSize"/>
+    </root>
+
+</configuration>

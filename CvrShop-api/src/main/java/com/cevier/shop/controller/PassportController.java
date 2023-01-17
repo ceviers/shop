@@ -14,10 +14,12 @@ import jakarta.annotation.Resource;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "注册与登入")
+@Slf4j
 @RestController
 @RequestMapping("/passport")
 public class PassportController {
@@ -69,6 +71,7 @@ public class PassportController {
         if (StringUtils.isBlank(userloginBO.getPassword())) {
             return ApiJsonResult.errorMsg("密码不能为空");
         }
+        log.info("用户登入，user={}", JsonUtils.objectToJson(userloginBO));
         UserVO user = userService.checkLogin(userloginBO);
         if (user != null) {
             CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
