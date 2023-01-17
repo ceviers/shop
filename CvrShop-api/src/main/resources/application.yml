@@ -36,4 +36,4 @@ knife4j:
     custom-code: 500
     enable-footer-custom: false
 
-debug: true
+#debug: true

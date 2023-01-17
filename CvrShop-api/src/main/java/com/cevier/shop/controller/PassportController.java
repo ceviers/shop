@@ -1,7 +1,6 @@
 package com.cevier.shop.controller;
 
 import com.cevier.shop.UserService;
-import com.cevier.shop.pojo.Users;
 import com.cevier.shop.pojo.bo.passport.UserBO;
 import com.cevier.shop.pojo.bo.passport.UserLoginBO;
 import com.cevier.shop.pojo.vo.UserVO;
@@ -23,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/passport")
 public class PassportController {
+
+    private static final String LOGIN_COOKIE_NAME = "user";
 
     @Resource
     private UserService userService;
@@ -74,9 +75,18 @@ public class PassportController {
         log.info("用户登入，user={}", JsonUtils.objectToJson(userloginBO));
         UserVO user = userService.checkLogin(userloginBO);
         if (user != null) {
-            CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
+            CookieUtils.setCookie(request, response, LOGIN_COOKIE_NAME, JsonUtils.objectToJson(user), true);
             return ApiJsonResult.ok(user);
         }
         return ApiJsonResult.errorMsg("用户名或密码错误");
+    }
+
+    @Operation(summary = "用户退出登录")
+    @PostMapping("/logout")
+    public ApiJsonResult logout(@RequestParam String userId,  HttpServletRequest request, HttpServletResponse response) {
+
+        CookieUtils.deleteCookie(request, response, LOGIN_COOKIE_NAME);
+
+        return ApiJsonResult.ok();
     }
 }
