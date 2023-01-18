@@ -3,6 +3,7 @@ package com.cevier.shop.controller;
 import com.cevier.shop.CarouselService;
 import com.cevier.shop.CategoryService;
 import com.cevier.shop.enums.CategoryTypeEnum;
+import com.cevier.shop.pojo.vo.NewItemsVO;
 import com.cevier.shop.utils.ApiJsonResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Tag(name = "商店首页接口")
 @RestController
@@ -41,5 +44,17 @@ public class IndexController {
     public ApiJsonResult getChildCategories(
             @Parameter(description = "一级分类ID") @PathVariable("fatherId") Integer fatherId) {
         return ApiJsonResult.ok(categoryService.getCategoriesByFatherId(fatherId));
+    }
+
+    @Operation(summary = "查询每个一级分类下的最新6条商品数据")
+    @GetMapping("/sixNewItems/{rootCatId}")
+    public ApiJsonResult sixNewItems(
+            @Parameter(description = "一级分类id", required = true)
+            @PathVariable Integer rootCatId) {
+        if (rootCatId == null) {
+            return ApiJsonResult.errorMsg("分类不存在");
+        }
+        List<NewItemsVO> list = categoryService.getSixNewItemsLazy(rootCatId);
+        return ApiJsonResult.ok(list);
     }
 }

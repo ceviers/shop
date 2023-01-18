@@ -6,9 +6,11 @@ import com.cevier.shop.manager.CategoryManager;
 import com.cevier.shop.mapper.CategoryMapper;
 import com.cevier.shop.pojo.Category;
 import com.cevier.shop.pojo.vo.CategoryVO;
+import com.cevier.shop.pojo.vo.NewItemsVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class CategoryManagerImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryManager  {
@@ -20,5 +22,10 @@ public class CategoryManagerImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public List<CategoryVO> getCategoryByFatherId(Integer fatherCategoryId) {
         return this.baseMapper.getCategoryByFatherId(fatherCategoryId);
+    }
+
+    @Override
+    public List<NewItemsVO> getSixNewItemsLazy(Map<String, Object> map) {
+        return this.baseMapper.getSixNewItemsLazy(map);
     }
 }
