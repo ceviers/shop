@@ -5,8 +5,10 @@ import com.cevier.shop.pojo.ItemsImg;
 import com.cevier.shop.pojo.ItemsParam;
 import com.cevier.shop.pojo.ItemsSpec;
 import com.cevier.shop.pojo.vo.CommentLevelCountsVO;
+import com.cevier.shop.pojo.vo.ShopCartVO;
 import com.cevier.shop.utils.PagedGridResult;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface ItemService {
@@ -21,4 +23,10 @@ public interface ItemService {
     CommentLevelCountsVO queryCommentCounts(String itemId);
 
     PagedGridResult queryPagedComments(String itemId, Integer level, Integer page, Integer pageSize);
+
+    PagedGridResult searchItems(String keywords, String sort, Integer page, Integer pageSize);
+
+    PagedGridResult searchItems(Integer catId, String sort, Integer page, Integer pageSize);
+
+    List<ShopCartVO> queryItemsBySpecIds(Collection<String> itemSpecIds);
 }

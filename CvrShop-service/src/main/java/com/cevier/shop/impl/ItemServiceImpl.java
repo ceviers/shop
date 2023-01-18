@@ -14,11 +14,14 @@ import com.cevier.shop.pojo.ItemsParam;
 import com.cevier.shop.pojo.ItemsSpec;
 import com.cevier.shop.pojo.vo.CommentLevelCountsVO;
 import com.cevier.shop.pojo.vo.ItemCommentVO;
+import com.cevier.shop.pojo.vo.SearchItemsVO;
+import com.cevier.shop.pojo.vo.ShopCartVO;
 import com.cevier.shop.utils.DesensitizationUtil;
 import com.cevier.shop.utils.PagedGridResult;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +93,35 @@ public class ItemServiceImpl implements ItemService {
         return setterPagedGrid(list);
     }
 
-    private PagedGridResult setterPagedGrid(IPage<ItemCommentVO> list) {
+    @Override
+    public PagedGridResult searchItems(String keywords, String sort, Integer page, Integer pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("keywords", keywords);
+        map.put("sort", sort);
+
+        IPage<SearchItemsVO> list = itemManager.searchItems(map, page, pageSize);
+
+        return setterPagedGrid(list);
+    }
+
+    @Override
+    public PagedGridResult searchItems(Integer catId, String sort, Integer page, Integer pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("catId", catId);
+        map.put("sort", sort);
+
+
+        IPage<SearchItemsVO> list = itemManager.searchItemsByThirdCat(map, page, pageSize);
+
+        return setterPagedGrid(list);
+    }
+
+    @Override
+    public List<ShopCartVO> queryItemsBySpecIds(Collection<String> itemSpecIds) {
+        return itemManager.queryItemsBySpecIds(itemSpecIds);
+    }
+
+    private PagedGridResult setterPagedGrid(IPage<?> list) {
         PagedGridResult grid = new PagedGridResult();
         grid.setPage((int)list.getCurrent());
         grid.setRows(list.getRecords());
