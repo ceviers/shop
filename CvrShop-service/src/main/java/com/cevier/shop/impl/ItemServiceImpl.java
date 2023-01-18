@@ -1,5 +1,6 @@
 package com.cevier.shop.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.cevier.shop.ItemService;
 import com.cevier.shop.enums.CommentLevel;
 import com.cevier.shop.manager.ItemManager;
@@ -12,10 +13,15 @@ import com.cevier.shop.pojo.ItemsImg;
 import com.cevier.shop.pojo.ItemsParam;
 import com.cevier.shop.pojo.ItemsSpec;
 import com.cevier.shop.pojo.vo.CommentLevelCountsVO;
+import com.cevier.shop.pojo.vo.ItemCommentVO;
+import com.cevier.shop.utils.DesensitizationUtil;
+import com.cevier.shop.utils.PagedGridResult;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -68,6 +74,29 @@ public class ItemServiceImpl implements ItemService {
         countsVO.setBadCounts(badCounts);
 
         return countsVO;
+    }
+
+    @Override
+    public PagedGridResult queryPagedComments(String itemId, Integer level, Integer page, Integer pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("itemId", itemId);
+        map.put("level", level);
+
+        IPage<ItemCommentVO> list = itemsCommentsManager.queryItemComments(map, page, pageSize);
+        for (ItemCommentVO vo : list.getRecords()) {
+            vo.setNickname(DesensitizationUtil.commonDisplay(vo.getNickname()));
+        }
+
+        return setterPagedGrid(list);
+    }
+
+    private PagedGridResult setterPagedGrid(IPage<ItemCommentVO> list) {
+        PagedGridResult grid = new PagedGridResult();
+        grid.setPage((int)list.getCurrent());
+        grid.setRows(list.getRecords());
+        grid.setTotal((int)(Math.ceil(list.getTotal() / list.getSize())));
+        grid.setRecords((int)list.getTotal());
+        return grid;
     }
 
     private Integer getCommentCounts(String itemId, Integer type) {

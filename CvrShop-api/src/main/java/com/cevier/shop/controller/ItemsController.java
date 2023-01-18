@@ -8,6 +8,7 @@ import com.cevier.shop.pojo.ItemsSpec;
 import com.cevier.shop.pojo.vo.CommentLevelCountsVO;
 import com.cevier.shop.pojo.vo.ItemInfoVO;
 import com.cevier.shop.utils.ApiJsonResult;
+import com.cevier.shop.utils.PagedGridResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,8 +20,8 @@ import java.util.List;
 
 @RestController
 @Tag(name = "商品信息展示的相关接口")
-@RequestMapping("items")
-public class ItemsController {
+@RequestMapping("/items")
+public class ItemsController extends BaseController {
     @Resource
     private ItemService itemService;
 
@@ -63,38 +64,38 @@ public class ItemsController {
         return ApiJsonResult.ok(countsVO);
     }
 
-//    @Operation(summary = "查询商品评论")
-//    @GetMapping("/comments")
-//    public ApiJsonResult comments(
-//            @Parameter(description = "商品id", required = true)
-//            @RequestParam String itemId,
-//            @Parameter(description = "评价等级", required = false)
-//            @RequestParam Integer level,
-//            @Parameter(description = "查询下一页的第几页", required = false)
-//            @RequestParam Integer page,
-//            @Parameter(description = "分页的每一页显示的条数", required = false)
-//            @RequestParam Integer pageSize) {
-//
-//        if (StringUtils.isBlank(itemId)) {
-//            return ApiJsonResult.errorMsg(null);
-//        }
-//
-//        if (page == null) {
-//            page = 1;
-//        }
-//
-//        if (pageSize == null) {
-//            pageSize = COMMON_PAGE_SIZE;
-//        }
-//
-//        PagedGridResult grid = itemService.queryPagedComments(itemId,
-//                level,
-//                page,
-//                pageSize);
-//
-//        return ApiJsonResult.ok(grid);
-//    }
-//
+    @Operation(summary = "查询商品评论")
+    @GetMapping("/comments")
+    public ApiJsonResult comments(
+            @Parameter(description = "商品id")
+            @RequestParam String itemId,
+            @Parameter(description = "评价等级")
+            @RequestParam(required = false) Integer level,
+            @Parameter(description = "查询下一页的第几页")
+            @RequestParam Integer page,
+            @Parameter(description = "分页的每一页显示的条数")
+            @RequestParam Integer pageSize) {
+
+        if (StringUtils.isBlank(itemId)) {
+            return ApiJsonResult.errorMsg(null);
+        }
+
+        if (page == null) {
+            page = 1;
+        }
+
+        if (pageSize == null) {
+            pageSize = COMMON_PAGE_SIZE;
+        }
+
+        PagedGridResult grid = itemService.queryPagedComments(itemId,
+                level,
+                page,
+                pageSize);
+
+        return ApiJsonResult.ok(grid);
+    }
+
 //    @Operation(summary = "搜索商品列表")
 //    @GetMapping("/search")
 //    public ApiJsonResult search(

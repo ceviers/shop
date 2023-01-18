@@ -5,6 +5,7 @@ import com.cevier.shop.pojo.ItemsImg;
 import com.cevier.shop.pojo.ItemsParam;
 import com.cevier.shop.pojo.ItemsSpec;
 import com.cevier.shop.pojo.vo.CommentLevelCountsVO;
+import com.cevier.shop.utils.PagedGridResult;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface ItemService {
     ItemsParam queryItemParam(String itemId);
 
     CommentLevelCountsVO queryCommentCounts(String itemId);
+
+    PagedGridResult queryPagedComments(String itemId, Integer level, Integer page, Integer pageSize);
 }
