@@ -5,6 +5,7 @@ import com.cevier.shop.pojo.Items;
 import com.cevier.shop.pojo.ItemsImg;
 import com.cevier.shop.pojo.ItemsParam;
 import com.cevier.shop.pojo.ItemsSpec;
+import com.cevier.shop.pojo.vo.CommentLevelCountsVO;
 import com.cevier.shop.pojo.vo.ItemInfoVO;
 import com.cevier.shop.utils.ApiJsonResult;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,22 +47,22 @@ public class ItemsController {
 
         return ApiJsonResult.ok(itemInfoVO);
     }
-//
-//    @Operation(summary = "查询商品评价等级")
-//    @GetMapping("/commentLevel")
-//    public ApiJsonResult commentLevel(
-//            @Parameter(description = "商品id", required = true)
-//            @RequestParam String itemId) {
-//
-//        if (StringUtils.isBlank(itemId)) {
-//            return ApiJsonResult.errorMsg(null);
-//        }
-//
-//        CommentLevelCountsVO countsVO = itemService.queryCommentCounts(itemId);
-//
-//        return ApiJsonResult.ok(countsVO);
-//    }
-//
+
+    @Operation(summary = "查询商品评价等级")
+    @GetMapping("/commentLevel")
+    public ApiJsonResult commentLevel(
+            @Parameter(description = "商品id", required = true)
+            @RequestParam String itemId) {
+
+        if (StringUtils.isBlank(itemId)) {
+            return ApiJsonResult.errorMsg(null);
+        }
+
+        CommentLevelCountsVO countsVO = itemService.queryCommentCounts(itemId);
+
+        return ApiJsonResult.ok(countsVO);
+    }
+
 //    @Operation(summary = "查询商品评论")
 //    @GetMapping("/comments")
 //    public ApiJsonResult comments(
