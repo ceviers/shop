@@ -121,6 +121,14 @@ public class ItemServiceImpl implements ItemService {
         return itemManager.queryItemsBySpecIds(itemSpecIds);
     }
 
+    @Override
+    public void decreaseItemSpecStock(String itemSpecId, int buyCounts) {
+        int result = itemManager.decreaseItemSpecStock(itemSpecId, buyCounts);
+        if (result != 1) {
+            throw new RuntimeException("订单创建失败，原因：库存不足!");
+        }
+    }
+
     private PagedGridResult setterPagedGrid(IPage<?> list) {
         PagedGridResult grid = new PagedGridResult();
         grid.setPage((int)list.getCurrent());

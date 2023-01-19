@@ -1,8 +1,8 @@
 package com.cevier.shop.controller;
 
 import com.cevier.shop.UserService;
-import com.cevier.shop.pojo.bo.passport.UserBO;
-import com.cevier.shop.pojo.bo.passport.UserLoginBO;
+import com.cevier.shop.pojo.bo.UserBO;
+import com.cevier.shop.pojo.bo.UserLoginBO;
 import com.cevier.shop.pojo.vo.UserVO;
 import com.cevier.shop.utils.ApiJsonResult;
 import com.cevier.shop.utils.CookieUtils;

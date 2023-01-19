@@ -18,4 +18,6 @@ public interface ItemManager extends IService<Items> {
     IPage<SearchItemsVO> searchItemsByThirdCat(Map<String, Object> map, Integer page, Integer pageSize);
 
     List<ShopCartVO> queryItemsBySpecIds(Collection<String> itemSpecIds);
+
+    int decreaseItemSpecStock(String itemSpecId, int buyCounts);
 }

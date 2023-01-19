@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ItemsImgManager extends IService<ItemsImg> {
     List<ItemsImg> queryItemImgList(String itemId);
+
+    String queryItemMainImgById(String itemId);
 }

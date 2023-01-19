@@ -1,7 +1,7 @@
 package com.cevier.shop;
 
 import com.cevier.shop.pojo.UserAddress;
-import com.cevier.shop.pojo.bo.passport.AddressBO;
+import com.cevier.shop.pojo.bo.AddressBO;
 
 import java.util.List;
 

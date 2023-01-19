@@ -1,6 +1,6 @@
 package com.cevier.shop.controller;
 
-import com.cevier.shop.pojo.bo.passport.ShopcartBO;
+import com.cevier.shop.pojo.bo.ShopcartBO;
 import com.cevier.shop.utils.ApiJsonResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

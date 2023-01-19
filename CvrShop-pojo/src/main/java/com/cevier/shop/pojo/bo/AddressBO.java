@@ -1,4 +1,4 @@
-package com.cevier.shop.pojo.bo.passport;
+package com.cevier.shop.pojo.bo;
 
 import lombok.Data;
 

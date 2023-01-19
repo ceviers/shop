@@ -19,4 +19,6 @@ public interface ItemsMapper extends BaseMapper<Items> {
     IPage<SearchItemsVO> searchItemsByThirdCat(@Param("paramsMap") Map<String, Object> map, Page<SearchItemsVO> searchItemsVOPage);
 
     List<ShopCartVO> queryItemsBySpecIds(@Param("paramsList") Collection<String> paramsList);
+
+    int decreaseItemSpecStock(@Param("itemSpecId") String itemSpecId, @Param("buyCounts") int buyCounts);
 }

@@ -2,7 +2,7 @@ package com.cevier.shop.controller;
 
 import com.cevier.shop.AddressService;
 import com.cevier.shop.pojo.UserAddress;
-import com.cevier.shop.pojo.bo.passport.AddressBO;
+import com.cevier.shop.pojo.bo.AddressBO;
 import com.cevier.shop.utils.ApiJsonResult;
 import com.cevier.shop.utils.MobileEmailUtils;
 import io.swagger.v3.oas.annotations.Operation;

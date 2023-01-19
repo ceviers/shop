@@ -36,4 +36,9 @@ public class ItemManagerImpl extends ServiceImpl<ItemsMapper, Items> implements 
     public List<ShopCartVO> queryItemsBySpecIds(Collection<String> itemSpecIds) {
         return this.baseMapper.queryItemsBySpecIds(itemSpecIds);
     }
+
+    @Override
+    public int decreaseItemSpecStock(String itemSpecId, int buyCounts) {
+        return this.baseMapper.decreaseItemSpecStock(itemSpecId, buyCounts);
+    }
 }

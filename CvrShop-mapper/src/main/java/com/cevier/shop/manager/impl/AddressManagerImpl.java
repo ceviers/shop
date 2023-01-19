@@ -19,4 +19,9 @@ public class AddressManagerImpl extends ServiceImpl<UserAddressMapper, UserAddre
     public List<UserAddress> getDefaultAddrByUserId(String userId) {
         return this.lambdaQuery().eq(UserAddress::getUserId, userId).eq(UserAddress::getIsDefault, 1).list();
     }
+
+    @Override
+    public UserAddress queryUserAddress(String userId, String addressId) {
+        return this.lambdaQuery().eq(UserAddress::getId, addressId).eq(UserAddress::getUserId, userId).last("LIMIY 1").one();
+    }
 }

@@ -9,4 +9,6 @@ public interface AddressManager extends IService<UserAddress> {
     List<UserAddress> queryAll(String userId);
 
     List<UserAddress> getDefaultAddrByUserId(String userId);
+
+    UserAddress queryUserAddress(String userId, String addressId);
 }

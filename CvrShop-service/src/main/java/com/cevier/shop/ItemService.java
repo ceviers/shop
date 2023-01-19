@@ -29,4 +29,6 @@ public interface ItemService {
     PagedGridResult searchItems(Integer catId, String sort, Integer page, Integer pageSize);
 
     List<ShopCartVO> queryItemsBySpecIds(Collection<String> itemSpecIds);
+
+    void decreaseItemSpecStock(String itemSpecId, int buyCounts);
 }

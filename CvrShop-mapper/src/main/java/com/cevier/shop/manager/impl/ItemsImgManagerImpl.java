@@ -14,4 +14,10 @@ public class ItemsImgManagerImpl extends ServiceImpl<ItemsImgMapper, ItemsImg> i
     public List<ItemsImg> queryItemImgList(String itemId) {
         return this.lambdaQuery().eq(ItemsImg::getItemId, itemId).list();
     }
+
+    @Override
+    public String queryItemMainImgById(String itemId) {
+        ItemsImg img =  this.lambdaQuery().eq(ItemsImg::getItemId, itemId).eq(ItemsImg::getIsMain, 1).last("LIMIT 1").one();
+        return img == null ? "" : img.getUrl();
+    }
 }

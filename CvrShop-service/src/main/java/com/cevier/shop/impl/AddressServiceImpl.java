@@ -3,7 +3,7 @@ package com.cevier.shop.impl;
 import com.cevier.shop.AddressService;
 import com.cevier.shop.manager.AddressManager;
 import com.cevier.shop.pojo.UserAddress;
-import com.cevier.shop.pojo.bo.passport.AddressBO;
+import com.cevier.shop.pojo.bo.AddressBO;
 import jakarta.annotation.Resource;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.BeanUtils;
