@@ -33,3 +33,29 @@ server {
     }
 }
 ```
+
+### nginx工作进程
+master 进程：主进程，nginx收到信号后将工作分发给工作进程
+worker 进程：工作进程，默认只有一个
+```
+# nginx.config
+worker_processes 1;
+```
+![nginx进程模型](images/nginx1.png)
+
+### worker抢占机制
+![nginx进程模型](images/nginx2.png)
+
+### nginx事件处理
+```nginx config
+event {
+    user epoll; # 异步非阻塞
+    worker_connections: 1024; # 默认worker进程的连接数
+}
+```
+![nginx进程模型](images/nginx3.png)
+
+> nginx可以处理高并发的原因：worker抢占机制；异步非阻塞的通信模式（多路复用器）。
+
+### nginx配置文件机构
+![nginx进程模型](images/nginx4.png)
