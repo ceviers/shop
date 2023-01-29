@@ -16,3 +16,20 @@ systemctl status nginx
 # 重启 Nginx
 sudo systemctl restart nginx
 ```
+nginx config
+```config
+server {
+    listen 80; # 监听端口
+    server_name localhist; # 监听的域名
+    
+    location / { # 路径映射  "/" 根路径映射到html文件夹
+        root html; 
+        index index.html index.htm;  
+    }
+    
+    error_page 500 502 503 504 /50x.html; # 服务器内部错误页面映射
+    localtion = /50x.html {
+        root html;
+    }
+}
+```
