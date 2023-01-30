@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://server1:3306/SHOP?characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=UTC
+    url: jdbc:mysql://server1:3306/SHOP?characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=UTC
     username: shop
     password: Shop001.
     hikari:
