@@ -108,4 +108,5 @@ public class HelloController {
 > * 重启项目
 
 项目成功部署
+![项目成功部署](https://cvr-file.oss-cn-hangzhou.aliyuncs.com/20230131/war-package-hello.png)
 ![tomcat10启动日志](https://cvr-file.oss-cn-hangzhou.aliyuncs.com/20230131/tomcat-log2.png)
