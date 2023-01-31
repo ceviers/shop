@@ -1,6 +1,6 @@
 ### Nginx配置SSL证书
 
-* 使用 apt 安装 Certbot 和它的 Nginx 插件：
+* 使用 apt 安装 Certbot 和它的 Nginx 插件
 
 ```bash
 sudo apt install certbot python3-certbot-nginx
