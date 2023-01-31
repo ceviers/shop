@@ -59,3 +59,16 @@ event {
 
 ### nginx配置文件机构
 ![nginx进程模型](images/nginx4.png)
+
+### 设置跨域请求
+
+```bash
+# 允许跨域请求的域，*表示所有
+add_header Access-Control-Allow-Origin *;
+# 允许带上cookie
+add_header Access-Control-Allow-Credentials true;
+# 允许的方法 GET,POST...
+add_header Access-Control-Allow-Methods *;
+# 允许求情的header
+add_header Access-Control-Allow-Headers *;
+```
