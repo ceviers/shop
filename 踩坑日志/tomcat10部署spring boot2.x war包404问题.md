@@ -1,5 +1,5 @@
 ### Tomcat10中部署Springboot项目war包404问题
-![tomcat 404](https://cvr-file.oss-cn-hangzhou.aliyuncs.com/20230131/tomcat404.png)
+![tomcat 404](https://cvr-file.oss-cn-hangzhou.aliyuncs.com/20230131/tomcat-http-404.png)
 
 > 背景
 > * tomcat版本：10.0.27
