@@ -20,6 +20,7 @@ public class CrosConfig {
         // 允许访问的地址
         config.addAllowedOrigin("http://localhost:8080");
         config.addAllowedOrigin("http://server1:8080");
+        config.addAllowedOrigin("http://server1");
         // 设置是否发送cookies
         config.setAllowCredentials(true);
         // 设置允许的请求
