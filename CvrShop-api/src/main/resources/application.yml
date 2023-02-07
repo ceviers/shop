@@ -18,6 +18,12 @@ spring:
     multipart:
       max-file-size: 512000     # 文件上传大小限制为500kb
       max-request-size: 512000  # 请求大小限制为500kb
+  data:
+    redis:
+      database: 0
+      password: shop123.
+      host: server1
+      port: 6379
 
 # 配置MyBatis日志
 mybatis-plus:

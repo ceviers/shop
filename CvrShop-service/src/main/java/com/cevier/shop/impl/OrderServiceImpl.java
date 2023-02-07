@@ -5,6 +5,7 @@ import com.cevier.shop.OrderService;
 import com.cevier.shop.enums.OrderStatusEnum;
 import com.cevier.shop.manager.*;
 import com.cevier.shop.pojo.*;
+import com.cevier.shop.pojo.bo.ShopcartBO;
 import com.cevier.shop.pojo.bo.SubmitOrderBO;
 import com.cevier.shop.pojo.vo.MerchantOrdersVO;
 import com.cevier.shop.pojo.vo.OrderVO;
@@ -13,7 +14,9 @@ import org.n3r.idworker.Sid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -48,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public OrderVO createOrder(SubmitOrderBO submitOrderBO) {
+    public OrderVO createOrder(List<ShopcartBO> shopcartList, SubmitOrderBO submitOrderBO) {
 
         String userId = submitOrderBO.getUserId();
         String addressId = submitOrderBO.getAddressId();
@@ -88,13 +91,15 @@ public class OrderServiceImpl implements OrderService {
 
 
         // 2. 循环根据itemSpecIds保存订单商品信息表
-        String itemSpecIdArr[] = itemSpecIds.split(",");
-        Integer totalAmount = 0;    // 商品原价累计
-        Integer realPayAmount = 0;  // 优惠后的实际支付价格累计
+        String[] itemSpecIdArr = itemSpecIds.split(",");
+        int totalAmount = 0;    // 商品原价累计
+        int realPayAmount = 0;  // 优惠后的实际支付价格累计
+        List<ShopcartBO> toBeRemovedShopcatdList = new ArrayList<>();
         for (String itemSpecId : itemSpecIdArr) {
-
-            // TODO 整合redis后，商品购买的数量重新从redis的购物车中获取
-            int buyCounts = 1;
+            ShopcartBO cartItem = getBuyCountsFromShopcart(shopcartList, itemSpecId);
+            // 商品购买的数量重新从redis的购物车中获取
+            int buyCounts = cartItem.getBuyCounts();
+            toBeRemovedShopcatdList.add(cartItem);
 
             // 2.1 根据规格id，查询规格的具体信息，主要获取价格
             ItemsSpec itemSpec = itemsSpecManager.getById(itemSpecId);
@@ -163,5 +168,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderStatus queryOrderStatusInfo(String orderId) {
         return orderStatusManager.getById(orderId);
+    }
+
+    /**
+     * 从redis中的购物车里获取商品，目的：counts
+     * @param shopcartList
+     * @param specId
+     * @return
+     */
+    private ShopcartBO getBuyCountsFromShopcart(List<ShopcartBO> shopcartList, String specId) {
+        for (ShopcartBO cart : shopcartList) {
+            if (cart.getSpecId().equals(specId)) {
+                return cart;
+            }
+        }
+        return null;
     }
 }
