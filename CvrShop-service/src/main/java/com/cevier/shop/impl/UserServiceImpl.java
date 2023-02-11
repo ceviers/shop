@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserVO creatUser(UserBO userBO) {
+    public Users creatUser(UserBO userBO) {
         Users user = new Users();
 
         user.setUsername(userBO.getUsername());
@@ -62,14 +62,14 @@ public class UserServiceImpl implements UserService {
 
         userManager.saveUser(user);
 
-        UserVO vo = new UserVO();
-        BeanUtils.copyProperties(user, vo);
-        return vo;
+//        UserVO vo = new UserVO();
+//        BeanUtils.copyProperties(user, vo);
+        return user;
     }
 
 
     @Override
-    public UserVO checkLogin(UserLoginBO userloginBO) {
+    public Users checkLogin(UserLoginBO userloginBO) {
         try {
             userloginBO.setPassword(MD5Utils.getMD5Str(userloginBO.getPassword()));
         } catch (Exception e) {

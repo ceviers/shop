@@ -2,11 +2,16 @@ package com.cevier.shop.controller;
 
 import com.cevier.shop.MyOrdersService;
 import com.cevier.shop.pojo.Orders;
+import com.cevier.shop.pojo.Users;
+import com.cevier.shop.pojo.vo.UsersVO;
 import com.cevier.shop.utils.ApiJsonResult;
+import com.cevier.shop.utils.RedisOperator;
 import jakarta.annotation.Resource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.util.UUID;
 
 public class BaseController {
 
@@ -14,6 +19,8 @@ public class BaseController {
 
     public static final Integer COMMON_PAGE_SIZE = 10;
     public static final Integer PAGE_SIZE = 20;
+
+    public static final String REDIS_USER_TOKEN = "redis_user_token";
 
     // 支付中心的调用地址
     String paymentUrl = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";		// produce
@@ -33,6 +40,9 @@ public class BaseController {
     @Resource
     public MyOrdersService myOrdersService;
 
+    @Resource
+    private RedisOperator redisOperator;
+
     /**
      * 用于验证用户和订单是否有关联关系，避免非法用户调用
      * @return
@@ -43,5 +53,17 @@ public class BaseController {
             return ApiJsonResult.errorMap("订单不存在！");
         }
         return ApiJsonResult.ok(order);
+    }
+
+    public UsersVO conventUsersVO(Users user) {
+        // 实现用户的redis会话
+        String uniqueToken = UUID.randomUUID().toString().trim();
+        redisOperator.set(REDIS_USER_TOKEN + ":" + user.getId(),
+                uniqueToken);
+
+        UsersVO usersVO = new UsersVO();
+        BeanUtils.copyProperties(user, usersVO);
+        usersVO.setUserUniqueToken(uniqueToken);
+        return usersVO;
     }
 }

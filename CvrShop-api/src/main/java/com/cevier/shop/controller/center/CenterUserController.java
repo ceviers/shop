@@ -1,8 +1,10 @@
 package com.cevier.shop.controller.center;
 
 import com.cevier.shop.center.CenterUserService;
+import com.cevier.shop.controller.BaseController;
 import com.cevier.shop.pojo.Users;
 import com.cevier.shop.pojo.bo.center.CenterUserBO;
+import com.cevier.shop.pojo.vo.UsersVO;
 import com.cevier.shop.resource.FileUpload;
 import com.cevier.shop.utils.ApiJsonResult;
 import com.cevier.shop.utils.CookieUtils;
@@ -34,7 +36,7 @@ import java.util.Map;
 @Tag(name = "用户信息接口")
 @RestController
 @RequestMapping("/userInfo")
-public class CenterUserController {
+public class CenterUserController extends BaseController {
 
     @Resource
     private CenterUserService centerUserService;
@@ -126,11 +128,12 @@ public class CenterUserController {
         // 更新用户头像到数据库
         Users userResult = centerUserService.updateUserFace(userId, finalUserFaceUrl);
 
+        // 后续要改，增加令牌token，会整合进redis，分布式会话
+        UsersVO usersVO = conventUsersVO(userResult);
+
         userResult = setNullProperty(userResult);
         CookieUtils.setCookie(request, response, "user",
                 JsonUtils.objectToJson(userResult), true);
-
-        // TODO 后续要改，增加令牌token，会整合进redis，分布式会话
 
         return ApiJsonResult.ok();
     }
@@ -156,11 +159,12 @@ public class CenterUserController {
 
         Users userResult = centerUserService.updateUserInfo(userId, centerUserBO);
 
+        // 后续要改，增加令牌token，会整合进redis，分布式会话
+        UsersVO usersVO = conventUsersVO(userResult);
+
         userResult = setNullProperty(userResult);
         CookieUtils.setCookie(request, response, "user",
                 JsonUtils.objectToJson(userResult), true);
-
-        // TODO 后续要改，增加令牌token，会整合进redis，分布式会话
 
         return ApiJsonResult.ok();
     }

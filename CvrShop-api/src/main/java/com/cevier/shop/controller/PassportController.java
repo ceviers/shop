@@ -1,10 +1,12 @@
 package com.cevier.shop.controller;
 
 import com.cevier.shop.UserService;
+import com.cevier.shop.pojo.Users;
 import com.cevier.shop.pojo.bo.ShopcartBO;
 import com.cevier.shop.pojo.bo.UserBO;
 import com.cevier.shop.pojo.bo.UserLoginBO;
 import com.cevier.shop.pojo.vo.UserVO;
+import com.cevier.shop.pojo.vo.UsersVO;
 import com.cevier.shop.utils.ApiJsonResult;
 import com.cevier.shop.utils.CookieUtils;
 import com.cevier.shop.utils.JsonUtils;
@@ -66,8 +68,11 @@ public class PassportController extends BaseController{
         if (userService.checkIfUserNameExist(userBO.getUsername())) {
             return ApiJsonResult.errorMsg("用户名已存在");
         }
-        UserVO user = userService.creatUser(userBO);
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
+        Users user = userService.creatUser(userBO);
+
+        // 实现用户的redis会话
+        UsersVO usersVO = conventUsersVO(user);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);
         return ApiJsonResult.ok(user);
     }
 
@@ -81,9 +86,12 @@ public class PassportController extends BaseController{
             return ApiJsonResult.errorMsg("密码不能为空");
         }
         log.info("用户登入，user={}", JsonUtils.objectToJson(userloginBO));
-        UserVO user = userService.checkLogin(userloginBO);
+        Users user = userService.checkLogin(userloginBO);
         if (user != null) {
-            CookieUtils.setCookie(request, response, LOGIN_COOKIE_NAME, JsonUtils.objectToJson(user), true);
+            // 实现用户的redis会话
+            UsersVO usersVO = conventUsersVO(user);
+
+            CookieUtils.setCookie(request, response, LOGIN_COOKIE_NAME, JsonUtils.objectToJson(usersVO), true);
 
             // 同步购物车数据
             synchShopcartData(user.getId(), request, response);
@@ -97,8 +105,11 @@ public class PassportController extends BaseController{
     @Operation(summary = "用户退出登录")
     @PostMapping("/logout")
     public ApiJsonResult logout(@RequestParam String userId,  HttpServletRequest request, HttpServletResponse response) {
-
+        // 清除用户的相关信息的cookie
         CookieUtils.deleteCookie(request, response, LOGIN_COOKIE_NAME);
+        // 用户退出登录，清除redis中user的会话信息
+        redisOperator.del(REDIS_USER_TOKEN + ":" + userId);
+        // 分布式会话中需要清除用户数据
         CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART);
 
         return ApiJsonResult.ok();

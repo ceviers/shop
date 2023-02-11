@@ -10,5 +10,5 @@ public interface UserManager extends IService<Users> {
 
     void saveUser(Users user);
 
-    UserVO checkIfUserNameAndPasswordMatched(UserLoginBO userloginBO);
+    Users checkIfUserNameAndPasswordMatched(UserLoginBO userloginBO);
 }

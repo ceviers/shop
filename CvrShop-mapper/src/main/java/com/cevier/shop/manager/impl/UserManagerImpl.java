@@ -28,11 +28,11 @@ public class UserManagerImpl extends ServiceImpl<UsersMapper, Users> implements 
     }
 
     @Override
-    public UserVO checkIfUserNameAndPasswordMatched(UserLoginBO userloginBO) {
+    public Users checkIfUserNameAndPasswordMatched(UserLoginBO userloginBO) {
         Users user = this.lambdaQuery().eq(Users::getUsername, userloginBO.getUsername())
                 .eq(Users::getPassword, userloginBO.getPassword()).last("LIMIT 1").one();
-        UserVO userVO = new UserVO();
-        BeanUtils.copyProperties(user, userVO);
-        return userVO;
+//        UserVO userVO = new UserVO();
+//        BeanUtils.copyProperties(user, userVO);
+        return user;
     }
 }
